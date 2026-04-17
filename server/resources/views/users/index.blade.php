@@ -11,7 +11,7 @@
 <div class="card border-0 shadow-sm">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
-            <thead class="table-dark">
+            <thead class="table-primary">
                 <tr>
                     <th>#</th>
                     <th>Name</th>

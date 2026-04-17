@@ -87,7 +87,7 @@
                             </select>
                             @error('org_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
-                        <button type="submit" class="btn btn-dark w-100">Add to Organization</button>
+                        <button type="submit" class="btn btn-primary w-100">Add to Organization</button>
                     </form>
                 @endif
             </div>

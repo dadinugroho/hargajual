@@ -26,7 +26,7 @@
                                   class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                         @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    <button type="submit" class="btn btn-dark w-100">Create Organization</button>
+                    <button type="submit" class="btn btn-primary w-100">Create Organization</button>
                 </form>
             </div>
         </div>

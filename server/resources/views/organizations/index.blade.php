@@ -5,13 +5,13 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0">Organizations</h3>
-    <a href="{{ route('organizations.create') }}" class="btn btn-dark">+ Add Organization</a>
+    <a href="{{ route('organizations.create') }}" class="btn btn-primary">+ Add Organization</a>
 </div>
 
 <div class="card border-0 shadow-sm">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
-            <thead class="table-dark">
+            <thead class="table-primary">
                 <tr>
                     <th>#</th>
                     <th>Name</th>

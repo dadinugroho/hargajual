@@ -21,6 +21,9 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('organizations.*') ? 'active' : '' }}" href="{{ route('organizations.index') }}">Organizations</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('item_prices.*') ? 'active' : '' }}" href="{{ route('item_prices.index') }}">Item Prices</a>
+                            </li>
                         @endif
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}">

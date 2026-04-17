@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ItemPriceController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -30,6 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::post('users/{user}/organizations', [UserController::class, 'addOrganization'])->name('users.organizations.add');
         Route::delete('users/{user}/organizations/{organization}', [UserController::class, 'removeOrganization'])->name('users.organizations.remove');
         Route::resource('organizations', OrganizationController::class);
+        Route::resource('item_prices', ItemPriceController::class);
         Route::post('organizations/{organization}/users', [OrganizationController::class, 'addUser'])->name('organizations.users.add');
         Route::delete('organizations/{organization}/users/{user}', [OrganizationController::class, 'removeUser'])->name('organizations.users.remove');
     });
