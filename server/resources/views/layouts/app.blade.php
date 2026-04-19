@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', config('app.name'))</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-        <div class="container">
+        <div class="container-fluid px-4">
             <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">{{ config('app.name') }}</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto align-items-center gap-2">
@@ -22,7 +23,24 @@
                                 <a class="nav-link {{ request()->routeIs('organizations.*') ? 'active' : '' }}" href="{{ route('organizations.index') }}">Organizations</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('item_prices.*') ? 'active' : '' }}" href="{{ route('item_prices.index') }}">Item Prices</a>
+                                <a class="nav-link {{ request()->routeIs('item_price_categories.*') ? 'active' : '' }}" href="{{ route('item_price_categories.index') }}">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('producers.*') ? 'active' : '' }}" href="{{ route('producers.index') }}">Producers</a>
+                            </li>
+                        @endif
+                        @if(isset($navOrganizations) && $navOrganizations->isNotEmpty())
+                            <li class="nav-item">
+                                <select class="form-select form-select-sm text-dark"
+                                        style="max-width:200px; background-color: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.4)"
+                                        onchange="window.location='/select-org?org_id='+this.value">
+                                    @foreach($navOrganizations as $org)
+                                        <option value="{{ $org->id }}" {{ $navSelectedOrgId == $org->id ? 'selected' : '' }}
+                                                style="color: #212529; background-color: white">
+                                            {{ $org->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </li>
                         @endif
                         <li class="nav-item">
@@ -42,7 +60,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid px-4">
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -60,5 +78,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 </html>

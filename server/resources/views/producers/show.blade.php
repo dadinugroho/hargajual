@@ -1,16 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Item Prices')
+@section('title', $producer->name . ' — Item Prices')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="mb-0">Item Prices</h3>
+    <div class="d-flex align-items-center gap-3">
+        <a href="{{ route('producers.index') }}" class="btn btn-sm btn-outline-secondary">&larr; Producers</a>
+        <h3 class="mb-0">{{ $producer->name }}</h3>
+    </div>
     <a href="{{ route('item_prices.create') }}" class="btn btn-primary">+ Add Item Price</a>
 </div>
 
 @if($categories->isNotEmpty())
 <div class="mb-3">
-    <form method="GET" action="{{ route('item_prices.index') }}" class="d-flex align-items-center gap-2">
+    <form method="GET" action="{{ route('producers.show', $producer) }}" class="d-flex align-items-center gap-2">
         <label for="category_filter" class="form-label mb-0 fw-semibold text-nowrap">Category:</label>
         <select id="category_filter" name="category_id" class="form-select form-select-sm" style="max-width:220px"
                 onchange="this.form.submit()">
@@ -69,9 +72,8 @@
                         <td class="text-end">{{ $fmt($item->selling_price_base_unit) }}</td>
                         <td class="text-end">
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    &#8942;
-                                </button>
+                                <button class="btn btn-sm btn-outline-secondary px-2" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">&#8942;</button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="{{ route('item_prices.edit', $item) }}">Edit</a></li>
                                     <li><hr class="dropdown-divider"></li>
@@ -89,7 +91,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="10" class="text-center text-muted py-4">No item prices found.</td>
+                        <td colspan="10" class="text-center text-muted py-4">No item prices yet.</td>
                     </tr>
                 @endforelse
             </tbody>

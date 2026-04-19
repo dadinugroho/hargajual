@@ -11,6 +11,8 @@ class ItemPrice extends Model
 
     protected $fillable = [
         'org_id',
+        'producer_id',
+        'category_id',
         'name',
         'base_unit',
         'qty_per_box',
@@ -19,6 +21,7 @@ class ItemPrice extends Model
         'disc2',
         'disc3',
         'handling_cost',
+        'handling_qty',
         'additional_cost_base_unit',
         'additional_cost_box',
         'cost_price_base_unit',
@@ -53,5 +56,15 @@ class ItemPrice extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class, 'org_id');
+    }
+
+    public function producer()
+    {
+        return $this->belongsTo(Producer::class, 'producer_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ItemPriceCategory::class, 'category_id');
     }
 }
