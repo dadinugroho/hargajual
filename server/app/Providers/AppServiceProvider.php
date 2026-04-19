@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.app', function ($view) {
             if (auth()->check()) {
-                $orgs = Organization::orderBy('name')->get();
+                $orgs = auth()->user()->isSuperAdmin()
+                    ? Organization::orderBy('name')->get()
+                    : auth()->user()->organizations()->orderBy('name')->get();
                 $selectedOrgId = session('selected_org_id');
 
                 if (!$selectedOrgId && $orgs->isNotEmpty()) {

@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->role === 'superadmin';
     }
 
+    public function orgIds(): array
+    {
+        return $this->organizations()->pluck('organizations.id')->toArray();
+    }
+
     public function organizations(): BelongsToMany
     {
         return $this->belongsToMany(Organization::class, 'user_organization', 'user_id', 'org_id')

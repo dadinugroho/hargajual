@@ -8,7 +8,79 @@
         <a href="{{ route('producers.index') }}" class="btn btn-sm btn-outline-secondary">&larr; Producers</a>
         <h3 class="mb-0">{{ $producer->name }}</h3>
     </div>
-    <a href="{{ route('item_prices.create') }}" class="btn btn-primary">+ Add Item Price</a>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#pdfModal">
+            Print PDF
+        </button>
+        <a href="{{ route('item_prices.create') }}" class="btn btn-primary">+ Add Item Price</a>
+    </div>
+</div>
+
+{{-- PDF Options Modal --}}
+<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="pdfForm" method="GET" action="{{ route('producers.pdf', $producer) }}" target="_blank">
+                @if($selectedCategoryId)
+                <input type="hidden" name="category_id" value="{{ $selectedCategoryId }}">
+                @endif
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">Print Price List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @php
+                        $defaultTitle2 = 'Per 1 ' . now()->locale('id')->translatedFormat('F Y');
+                    @endphp
+                    <div class="mb-3">
+                        <label for="pdf_title1" class="form-label fw-semibold">Title 1</label>
+                        <input type="text" class="form-control" id="pdf_title1" name="title1" value="Daftar Harga {{ $producer->name }}">
+                    </div>
+                    <div class="mb-4">
+                        <label for="pdf_title2" class="form-label fw-semibold">Title 2</label>
+                        <input type="text" class="form-control" id="pdf_title2" name="title2" value="{{ $defaultTitle2 }}">
+                    </div>
+                    <div class="mb-2 fw-semibold">Columns</div>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="name"
+                                   id="col_name" checked disabled>
+                            <input type="hidden" name="cols[]" value="name">
+                            <label class="form-check-label" for="col_name">Name</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="base_unit" id="col_base_unit">
+                            <label class="form-check-label" for="col_base_unit">Base Unit</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="cost_price" id="col_cost_price">
+                            <label class="form-check-label" for="col_cost_price">Cost Price</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="discount" id="col_discount">
+                            <label class="form-check-label" for="col_discount">Discount</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="profit" id="col_profit">
+                            <label class="form-check-label" for="col_profit">Profit</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="rounding" id="col_rounding">
+                            <label class="form-check-label" for="col_rounding">Rounding</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="cols[]" value="selling_price" id="col_selling_price" checked>
+                            <label class="form-check-label" for="col_selling_price">Selling Price</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Generate PDF</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @if($categories->isNotEmpty())

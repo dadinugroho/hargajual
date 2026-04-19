@@ -9,9 +9,12 @@ class ItemPriceCategoryController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
         $selectedOrgId = session('selected_org_id');
+        $allowedOrgIds = $user->isSuperAdmin() ? null : $user->orgIds();
 
         $categories = ItemPriceCategory::with('organization')
+            ->when($allowedOrgIds, fn($q) => $q->whereIn('org_id', $allowedOrgIds))
             ->when($selectedOrgId, fn($q) => $q->where('org_id', $selectedOrgId))
             ->orderBy('name')
             ->paginate(20);
@@ -28,12 +31,15 @@ class ItemPriceCategoryController extends Controller
                 ->with('error', 'Please select an organization first.');
         }
 
+        $this->authorizeOrg($selectedOrgId);
+
         return view('item_price_categories.create', compact('selectedOrgId'));
     }
 
     public function store(Request $request)
     {
         $data = $this->validateCategory($request);
+        $this->authorizeOrg($data['org_id']);
         ItemPriceCategory::create($data);
 
         return redirect()
@@ -43,11 +49,13 @@ class ItemPriceCategoryController extends Controller
 
     public function edit(ItemPriceCategory $itemPriceCategory)
     {
+        $this->authorizeOrg($itemPriceCategory->org_id);
         return view('item_price_categories.edit', compact('itemPriceCategory'));
     }
 
     public function update(Request $request, ItemPriceCategory $itemPriceCategory)
     {
+        $this->authorizeOrg($itemPriceCategory->org_id);
         $data = $this->validateCategory($request);
         $itemPriceCategory->update($data);
 
@@ -58,6 +66,7 @@ class ItemPriceCategoryController extends Controller
 
     public function destroy(ItemPriceCategory $itemPriceCategory)
     {
+        $this->authorizeOrg($itemPriceCategory->org_id);
         $itemPriceCategory->delete();
 
         return redirect()
@@ -72,6 +81,8 @@ class ItemPriceCategoryController extends Controller
             'name'   => ['required', 'string', 'max:255'],
         ]);
 
+        $this->authorizeOrg($validated['org_id']);
+
         $category = ItemPriceCategory::create([
             'org_id' => $validated['org_id'],
             'name'   => $validated['name'],
@@ -79,6 +90,12 @@ class ItemPriceCategoryController extends Controller
         ]);
 
         return response()->json(['id' => $category->id, 'name' => $category->name]);
+    }
+
+    private function authorizeOrg(int $orgId): void
+    {
+        $user = auth()->user();
+        abort_unless($user->isSuperAdmin() || in_array($orgId, $user->orgIds()), 403);
     }
 
     private function validateCategory(Request $request): array

@@ -22,13 +22,10 @@
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('organizations.*') ? 'active' : '' }}" href="{{ route('organizations.index') }}">Organizations</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('item_price_categories.*') ? 'active' : '' }}" href="{{ route('item_price_categories.index') }}">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('producers.*') ? 'active' : '' }}" href="{{ route('producers.index') }}">Producers</a>
-                            </li>
                         @endif
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('item_price_categories.*') ? 'active' : '' }}" href="{{ route('item_price_categories.index') }}">Categories</a>
+                        </li>
                         @if(isset($navOrganizations) && $navOrganizations->isNotEmpty())
                             <li class="nav-item">
                                 <select class="form-select form-select-sm text-dark"

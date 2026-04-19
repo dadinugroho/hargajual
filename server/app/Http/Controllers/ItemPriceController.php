@@ -19,6 +19,7 @@ class ItemPriceController extends Controller
         }
 
         $producer = Producer::findOrFail($producerId);
+        $this->authorizeOrg($producer->org_id);
         $categories = ItemPriceCategory::where('org_id', $producer->org_id)->where('status', 'active')->orderBy('name')->get();
 
         return view('item_prices.create', compact('producer', 'categories'));
@@ -30,6 +31,7 @@ class ItemPriceController extends Controller
         $data = $this->percentToDecimal($data);
 
         $producer = Producer::findOrFail($data['producer_id']);
+        $this->authorizeOrg($producer->org_id);
         $data['org_id'] = $producer->org_id;
 
         ItemPrice::create($data);
@@ -43,12 +45,14 @@ class ItemPriceController extends Controller
 
     public function show(ItemPrice $itemPrice)
     {
+        $this->authorizeOrg($itemPrice->org_id);
         $itemPrice->load('organization', 'producer');
         return view('item_prices.show', compact('itemPrice'));
     }
 
     public function edit(ItemPrice $itemPrice)
     {
+        $this->authorizeOrg($itemPrice->org_id);
         $categories = ItemPriceCategory::where('org_id', $itemPrice->org_id)->where('status', 'active')->orderBy('name')->get();
         $producer = $itemPrice->producer;
 
@@ -57,6 +61,7 @@ class ItemPriceController extends Controller
 
     public function update(Request $request, ItemPrice $itemPrice)
     {
+        $this->authorizeOrg($itemPrice->org_id);
         $data = $this->validateItemPrice($request);
         $data = $this->percentToDecimal($data);
 
@@ -70,6 +75,7 @@ class ItemPriceController extends Controller
 
     public function destroy(ItemPrice $itemPrice)
     {
+        $this->authorizeOrg($itemPrice->org_id);
         $producer = $itemPrice->producer;
         $itemPrice->delete();
 
@@ -78,6 +84,12 @@ class ItemPriceController extends Controller
         }
 
         return redirect()->route('producers.index')->with('success', 'Item price deleted.');
+    }
+
+    private function authorizeOrg(int $orgId): void
+    {
+        $user = auth()->user();
+        abort_unless($user->isSuperAdmin() || in_array($orgId, $user->orgIds()), 403);
     }
 
     private function percentToDecimal(array $data): array

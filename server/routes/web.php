@@ -31,16 +31,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::delete('/profile/organizations/{organization}', [ProfileController::class, 'leaveOrganization'])->name('profile.leave-organization');
 
+    // All authenticated users
+    Route::get('producers/{producer}/pdf', [ProducerController::class, 'pdf'])->name('producers.pdf');
+    Route::resource('producers', ProducerController::class);
+    Route::resource('item_prices', ItemPriceController::class)->except('index');
+    Route::post('item_price_categories/quick', [ItemPriceCategoryController::class, 'quickStore'])->name('item_price_categories.quick_store');
+    Route::resource('item_price_categories', ItemPriceCategoryController::class)->except('show');
+
     // Superadmin only
     Route::middleware('superadmin')->group(function () {
         Route::resource('users', UserController::class);
         Route::post('users/{user}/organizations', [UserController::class, 'addOrganization'])->name('users.organizations.add');
         Route::delete('users/{user}/organizations/{organization}', [UserController::class, 'removeOrganization'])->name('users.organizations.remove');
         Route::resource('organizations', OrganizationController::class);
-        Route::resource('producers', ProducerController::class);
-        Route::resource('item_prices', ItemPriceController::class)->except('index');
-        Route::post('item_price_categories/quick', [ItemPriceCategoryController::class, 'quickStore'])->name('item_price_categories.quick_store');
-        Route::resource('item_price_categories', ItemPriceCategoryController::class)->except('show');
         Route::post('organizations/{organization}/users', [OrganizationController::class, 'addUser'])->name('organizations.users.add');
         Route::delete('organizations/{organization}/users/{user}', [OrganizationController::class, 'removeUser'])->name('organizations.users.remove');
     });
