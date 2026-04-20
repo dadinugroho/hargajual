@@ -48,7 +48,7 @@
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button class="btn btn-sm btn-outline-light">Logout</button>
+                                <button class="btn btn-sm btn-outline-light">{{ __('common.logout') }}</button>
                             </form>
                         </li>
                     @endauth

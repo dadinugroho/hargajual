@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Item Price Categories')
+@section('title', __('categories.title'))
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="mb-0">Item Price Categories</h3>
-    <a href="{{ route('item_price_categories.create') }}" class="btn btn-primary">+ Add Category</a>
+    <h3 class="mb-0">{{ __('categories.title') }}</h3>
+    <a href="{{ route('item_price_categories.create') }}" class="btn btn-primary">+ {{ __('categories.add_category') }}</a>
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -14,9 +14,9 @@
             <thead class="table-primary">
                 <tr>
                     <th>#</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Status</th>
+                    <th>{{ __('common.name') }}</th>
+                    <th>{{ __('common.description') }}</th>
+                    <th>{{ __('common.status') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,9 +28,9 @@
                         <td class="text-muted">{{ $category->description ?? '—' }}</td>
                         <td>
                             @if($category->status === 'active')
-                                <span class="badge bg-success">Active</span>
+                                <span class="badge bg-success">{{ __('common.active') }}</span>
                             @else
-                                <span class="badge bg-secondary">Inactive</span>
+                                <span class="badge bg-secondary">{{ __('common.inactive') }}</span>
                             @endif
                         </td>
                         <td class="text-end">
@@ -38,14 +38,14 @@
                                 <button class="btn btn-sm btn-outline-secondary px-2" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">&#8942;</button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{{ route('item_price_categories.edit', $category) }}">Edit</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('item_price_categories.edit', $category) }}">{{ __('common.edit') }}</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form method="POST" action="{{ route('item_price_categories.destroy', $category) }}"
-                                              onsubmit="return confirm('Delete this category?')">
+                                              onsubmit="return confirm('{{ __('categories.delete_confirm') }}')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                            <button type="submit" class="dropdown-item text-danger">{{ __('common.delete') }}</button>
                                         </form>
                                     </li>
                                 </ul>
@@ -54,7 +54,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center text-muted py-4">No categories found.</td>
+                        <td colspan="5" class="text-center text-muted py-4">{{ __('categories.no_found') }}</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -1,0 +1,48 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'title'              => 'Item Prices',
+    'add_item_price'     => 'Add Item Price',
+    'edit_item_price'    => 'Edit Item Price',
+    'back'               => 'Back',
+    'name'               => 'Name',
+    'category'           => 'Category',
+    'category_none'      => '— None —',
+    'category_add_new'   => '＋ Add new category…',
+    'base_unit'          => 'Base Unit',
+    'purchase_price'     => 'Purchase Price',
+    'disc_1'             => 'Disc 1',
+    'disc_2'             => 'Disc 2',
+    'disc_3'             => 'Disc 3',
+    'disc'               => 'Disc',
+    'handling_cost'      => 'Handling Cost',
+    'rounding'           => 'Rounding',
+    'profit'             => 'Profit',
+    'cost_price'         => 'Cost Price',
+    'selling_price'      => 'Selling Price',
+    'btn_add'            => 'Add Item Price',
+    'btn_add_and_new'    => 'Add & New',
+    'btn_save'           => 'Save Item Price',
+    'delete_confirm'     => 'Delete this item price?',
+    'no_found'           => 'No item prices found.',
+
+    // show page
+    'section_general'         => 'General',
+    'section_discounts_costs' => 'Discounts & Costs',
+    'section_cost_price'      => 'Cost Price',
+    'section_selling_price'   => 'Selling Price',
+    'organization'            => 'Organization',
+    'qty_per_box'             => 'Qty per Box',
+    'addl_cost_base_unit'     => 'Addl. Cost / Base Unit',
+    'addl_cost_box'           => 'Addl. Cost / Box',
+    'cost_base_unit'          => 'Cost / Base Unit',
+    'cost_box'                => 'Cost / Box',
+    'rounding_base_unit'      => 'Rounding / Base Unit',
+    'rounding_box'            => 'Rounding / Box',
+    'profit_base_unit'        => 'Profit / Base Unit',
+    'profit_box'              => 'Profit / Box',
+    'selling_base_unit'       => 'Selling / Base Unit',
+    'selling_box'             => 'Selling / Box',
+];

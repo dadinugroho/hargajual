@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Item Prices')
+@section('title', __('item_prices.title'))
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="mb-0">Item Prices</h3>
-    <a href="{{ route('item_prices.create') }}" class="btn btn-primary">+ Add Item Price</a>
+    <h3 class="mb-0">{{ __('item_prices.title') }}</h3>
+    <a href="{{ route('item_prices.create') }}" class="btn btn-primary">+ {{ __('item_prices.add_item_price') }}</a>
 </div>
 
 @if($categories->isNotEmpty())
 <div class="mb-3">
     <form method="GET" action="{{ route('item_prices.index') }}" class="d-flex align-items-center gap-2">
-        <label for="category_filter" class="form-label mb-0 fw-semibold text-nowrap">Category:</label>
+        <label for="category_filter" class="form-label mb-0 fw-semibold text-nowrap">{{ __('common.category_filter') }}</label>
         <select id="category_filter" name="category_id" class="form-select form-select-sm" style="max-width:220px"
                 onchange="this.form.submit()">
-            <option value="">— All —</option>
+            <option value="">{{ __('common.filter_all') }}</option>
             @foreach($categories as $cat)
                 <option value="{{ $cat->id }}" {{ $selectedCategoryId == $cat->id ? 'selected' : '' }}>
                     {{ $cat->name }}
@@ -31,14 +31,14 @@
             <thead class="table-primary">
                 <tr>
                     <th>#</th>
-                    <th>Name</th>
-                    <th class="text-end">Purchase Price</th>
-                    <th class="text-end">Disc</th>
-                    <th class="text-end">Handling Cost</th>
-                    <th class="text-end">Cost Price</th>
-                    <th class="text-end">Rounding</th>
-                    <th class="text-end">Profit</th>
-                    <th class="text-end">Selling Price</th>
+                    <th>{{ __('item_prices.name') }}</th>
+                    <th class="text-end">{{ __('item_prices.purchase_price') }}</th>
+                    <th class="text-end">{{ __('item_prices.disc') }}</th>
+                    <th class="text-end">{{ __('item_prices.handling_cost') }}</th>
+                    <th class="text-end">{{ __('item_prices.cost_price') }}</th>
+                    <th class="text-end">{{ __('item_prices.rounding') }}</th>
+                    <th class="text-end">{{ __('item_prices.profit') }}</th>
+                    <th class="text-end">{{ __('item_prices.selling_price') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -73,14 +73,14 @@
                                     &#8942;
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{{ route('item_prices.edit', $item) }}">Edit</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('item_prices.edit', $item) }}">{{ __('common.edit') }}</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form method="POST" action="{{ route('item_prices.destroy', $item) }}"
-                                              onsubmit="return confirm('Delete this item price?')">
+                                              onsubmit="return confirm('{{ __('item_prices.delete_confirm') }}')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                            <button type="submit" class="dropdown-item text-danger">{{ __('common.delete') }}</button>
                                         </form>
                                     </li>
                                 </ul>
@@ -89,7 +89,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="10" class="text-center text-muted py-4">No item prices found.</td>
+                        <td colspan="10" class="text-center text-muted py-4">{{ __('item_prices.no_found') }}</td>
                     </tr>
                 @endforelse
             </tbody>

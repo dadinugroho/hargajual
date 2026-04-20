@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Add Item Price')
+@section('title', __('item_prices.add_item_price'))
 
 @section('content')
 <div class="d-flex align-items-center mb-4 gap-3">
-    <a href="{{ route('producers.show', $producer) }}" class="btn btn-sm btn-outline-secondary">&larr; Back</a>
-    <h3 class="mb-0">Add Item Price &mdash; {{ $producer->name }}</h3>
+    <a href="{{ route('producers.show', $producer) }}" class="btn btn-sm btn-outline-secondary">&larr; {{ __('item_prices.back') }}</a>
+    <h3 class="mb-0">{{ __('item_prices.add_item_price') }} &mdash; {{ $producer->name }}</h3>
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -23,7 +23,7 @@
                     <div class="row g-3">
                         {{-- Row 1: Name, Category, Base Unit --}}
                         <div class="col-md-6">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label">{{ __('item_prices.name') }}</label>
                             <input type="text" id="name" name="name"
                                    class="form-control @error('name') is-invalid @enderror"
                                    value="{{ old('name') }}" required autofocus>
@@ -31,22 +31,22 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="category_id" class="form-label">Category</label>
+                            <label for="category_id" class="form-label">{{ __('item_prices.category') }}</label>
                             <select id="category_id" name="category_id"
                                     class="form-select @error('category_id') is-invalid @enderror">
-                                <option value="">— None —</option>
+                                <option value="">{{ __('item_prices.category_none') }}</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
                                         {{ $cat->name }}
                                     </option>
                                 @endforeach
-                                <option value="__new__">＋ Add new category…</option>
+                                <option value="__new__">{{ __('item_prices.category_add_new') }}</option>
                             </select>
                             @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="col-md-2">
-                            <label for="base_unit" class="form-label">Base Unit</label>
+                            <label for="base_unit" class="form-label">{{ __('item_prices.base_unit') }}</label>
                             <input type="text" id="base_unit" name="base_unit"
                                    class="form-control @error('base_unit') is-invalid @enderror"
                                    value="{{ old('base_unit') }}">
@@ -55,7 +55,7 @@
 
                         {{-- Row 2: Purchase Price, Disc 1, Disc 2, Disc 3 --}}
                         <div class="col-md-3">
-                            <label for="purchase_price" class="form-label">Purchase Price</label>
+                            <label for="purchase_price" class="form-label">{{ __('item_prices.purchase_price') }}</label>
                             <input type="number" id="purchase_price" name="purchase_price" step="0.0001" min="0"
                                    class="form-control @error('purchase_price') is-invalid @enderror"
                                    value="{{ old('purchase_price') }}">
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="disc1" class="form-label">Disc 1</label>
+                            <label for="disc1" class="form-label">{{ __('item_prices.disc_1') }}</label>
                             <input type="number" id="disc1" name="disc1" step="0.01" min="0" max="100"
                                    class="form-control @error('disc1') is-invalid @enderror"
                                    value="{{ old('disc1') }}">
@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="disc2" class="form-label">Disc 2</label>
+                            <label for="disc2" class="form-label">{{ __('item_prices.disc_2') }}</label>
                             <input type="number" id="disc2" name="disc2" step="0.01" min="0" max="100"
                                    class="form-control @error('disc2') is-invalid @enderror"
                                    value="{{ old('disc2') }}">
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="disc3" class="form-label">Disc 3</label>
+                            <label for="disc3" class="form-label">{{ __('item_prices.disc_3') }}</label>
                             <input type="number" id="disc3" name="disc3" step="0.01" min="0" max="100"
                                    class="form-control @error('disc3') is-invalid @enderror"
                                    value="{{ old('disc3') }}">
@@ -88,7 +88,7 @@
 
                         {{-- Row 3: Handling Cost, Rounding, Profit --}}
                         <div class="col-md-4">
-                            <label class="form-label">Handling Cost</label>
+                            <label class="form-label">{{ __('item_prices.handling_cost') }}</label>
                             <div class="d-flex gap-2 align-items-start">
                                 <div class="grow">
                                     <input type="number" id="handling_cost" name="handling_cost" step="0.0001" min="0"
@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="rounding_base_unit" class="form-label">Rounding</label>
+                            <label for="rounding_base_unit" class="form-label">{{ __('item_prices.rounding') }}</label>
                             <input type="number" id="rounding_base_unit" name="rounding_base_unit" step="0.0001" min="0"
                                    class="form-control @error('rounding_base_unit') is-invalid @enderror"
                                    value="{{ old('rounding_base_unit') }}">
@@ -115,7 +115,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="profit_base_unit" class="form-label">Profit</label>
+                            <label for="profit_base_unit" class="form-label">{{ __('item_prices.profit') }}</label>
                             <input type="number" id="profit_base_unit" name="profit_base_unit" step="0.01" min="0" max="100"
                                    class="form-control @error('profit_base_unit') is-invalid @enderror"
                                    value="{{ old('profit_base_unit') }}">
@@ -125,11 +125,11 @@
                         {{-- Actions --}}
                         <div class="col-12 mt-2 d-flex gap-2">
                             <button type="submit" name="_after_save" value="done" class="btn btn-primary">
-                                Add Item Price
+                                {{ __('item_prices.btn_add') }}
                             </button>
                             <button id="btn-add-new" type="submit" name="_after_save" value="new"
                                     class="btn btn-outline-primary">
-                                Add &amp; New
+                                {{ __('item_prices.btn_add_and_new') }}
                             </button>
                         </div>
                     </div>
@@ -138,11 +138,11 @@
                 {{-- Right: Calculated values --}}
                 <div class="col-md-2 d-flex flex-column gap-3 pt-1">
                     <div>
-                        <div class="text-muted small mb-1">Cost Price</div>
+                        <div class="text-muted small mb-1">{{ __('item_prices.cost_price') }}</div>
                         <div id="calc_cost_price" class="fs-5 fw-semibold text-end">—</div>
                     </div>
                     <div>
-                        <div class="text-muted small mb-1">Selling Price</div>
+                        <div class="text-muted small mb-1">{{ __('item_prices.selling_price') }}</div>
                         <div id="calc_selling_price" class="fs-4 fw-bold text-end text-primary">—</div>
                     </div>
                 </div>

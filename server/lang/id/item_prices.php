@@ -1,0 +1,48 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'title'              => 'Harga Barang',
+    'add_item_price'     => 'Tambah Barang',
+    'edit_item_price'    => 'Edit Barang',
+    'back'               => 'Kembali',
+    'name'               => 'Nama',
+    'category'           => 'Kategori',
+    'category_none'      => '— Tidak Ada —',
+    'category_add_new'   => '+ Tambah kategori baru…',
+    'base_unit'          => 'Satuan',
+    'purchase_price'     => 'Harga Beli',
+    'disc_1'             => 'Diskon 1',
+    'disc_2'             => 'Diskon 2',
+    'disc_3'             => 'Diskon 3',
+    'disc'               => 'Diskon',
+    'handling_cost'      => 'Ongkos',
+    'rounding'           => 'Pembulatan',
+    'profit'             => 'Profit',
+    'cost_price'         => 'Modal',
+    'selling_price'      => 'Harga Jual',
+    'btn_add'            => 'Tambah',
+    'btn_add_and_new'    => 'Tambah & Baru',
+    'btn_save'           => 'Simpan Barang',
+    'delete_confirm'     => 'Hapus barang ini?',
+    'no_found'           => 'Tidak ada barang ditemukan.',
+
+    // show page
+    'section_general'         => 'Umum',
+    'section_discounts_costs' => 'Diskon & Biaya',
+    'section_cost_price'      => 'Modal',
+    'section_selling_price'   => 'Harga Jual',
+    'organization'            => 'Organisasi',
+    'qty_per_box'             => 'Jml per Dus',
+    'addl_cost_base_unit'     => 'Biaya Tambahan / Satuan',
+    'addl_cost_box'           => 'Biaya Tambahan / Dus',
+    'cost_base_unit'          => 'HPP / Satuan',
+    'cost_box'                => 'HPP / Dus',
+    'rounding_base_unit'      => 'Pembulatan / Satuan',
+    'rounding_box'            => 'Pembulatan / Dus',
+    'profit_base_unit'        => 'Keuntungan / Satuan',
+    'profit_box'              => 'Keuntungan / Dus',
+    'selling_base_unit'       => 'Harga Jual / Satuan',
+    'selling_box'             => 'Harga Jual / Dus',
+];

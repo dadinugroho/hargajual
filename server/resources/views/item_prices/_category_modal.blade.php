@@ -2,16 +2,16 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header py-2">
-                <h6 class="modal-title" id="newCategoryModalLabel">New Category</h6>
+                <h6 class="modal-title" id="newCategoryModalLabel">{{ __('categories.new_category') }}</h6>
                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <input type="text" id="newCategoryName" class="form-control" placeholder="Category name">
+                <input type="text" id="newCategoryName" class="form-control" placeholder="{{ __('categories.category_name') }}">
                 <div id="newCategoryError" class="text-danger small mt-1 d-none"></div>
             </div>
             <div class="modal-footer py-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-sm btn-primary" id="btnCreateCategory">Create</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
+                <button type="button" class="btn btn-sm btn-primary" id="btnCreateCategory">{{ __('categories.create') }}</button>
             </div>
         </div>
     </div>
@@ -27,6 +27,7 @@
     const categorySelect = document.getElementById('category_id');
     const csrfToken    = document.querySelector('meta[name="csrf-token"]').content;
     const quickUrl     = '{{ route("item_price_categories.quick_store") }}';
+    const errorMsg     = @json(__('categories.failed_create'));
 
     categorySelect.addEventListener('change', function () {
         if (this.value !== '__new__') return;
@@ -59,7 +60,7 @@
             categorySelect.value = cat.id;
             modal.hide();
         } catch {
-            errorDiv.textContent = 'Failed to create category. Try again.';
+            errorDiv.textContent = errorMsg;
             errorDiv.classList.remove('d-none');
         } finally {
             btnCreate.disabled = false;
