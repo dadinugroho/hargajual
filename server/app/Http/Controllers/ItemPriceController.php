@@ -37,7 +37,9 @@ class ItemPriceController extends Controller
         ItemPrice::create($data);
 
         if ($request->input('_after_save') === 'new') {
-            return redirect()->route('item_prices.create')->with('success', 'Item price added. Add another.');
+            return redirect()->route('item_prices.create')
+                ->withInput($request->only('category_id'))
+                ->with('success', 'Item price added. Add another.');
         }
 
         return redirect()->route('producers.show', $producer)->with('success', 'Item price added.');
