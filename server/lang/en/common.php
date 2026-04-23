@@ -31,6 +31,7 @@ return [
     'optional'             => 'optional',
     'filter_all'           => '— All —',
     'category_filter'      => 'Category:',
+    'per_page'             => 'Per page:',
     'add_to_organization'  => 'Add to Organization',
     'remember_me'          => 'Remember me',
     'login'                => 'Login',

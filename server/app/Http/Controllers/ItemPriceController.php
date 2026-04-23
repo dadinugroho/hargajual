@@ -37,8 +37,9 @@ class ItemPriceController extends Controller
         ItemPrice::create($data);
 
         if ($request->input('_after_save') === 'new') {
-            return redirect()->route('item_prices.create')
-                ->withInput($request->only('category_id'))
+            return redirect()->route('producers.show', $producer)
+                ->with('show_add_form', true)
+                ->with('prefill_category', $data['category_id'] ?? null)
                 ->with('success', 'Item price added. Add another.');
         }
 
@@ -96,11 +97,19 @@ class ItemPriceController extends Controller
 
     private function percentToDecimal(array $data): array
     {
-        foreach (['disc1', 'disc2', 'disc3', 'profit_base_unit', 'profit_box'] as $field) {
-            if (isset($data[$field])) {
-                $data[$field] = $data[$field] / 100;
-            }
+        foreach (['disc1', 'disc2', 'disc3', 'disc4', 'disc5', 'disc6', 'profit_base_unit', 'profit_box'] as $field) {
+            $data[$field] = isset($data[$field]) ? $data[$field] / 100 : 0;
         }
+
+        foreach ([
+            'purchase_price', 'handling_cost', 'handling_qty',
+            'rounding_base_unit', 'rounding_box',
+            'cost_price_base_unit', 'cost_price_box',
+            'selling_price_base_unit', 'selling_price_box',
+        ] as $field) {
+            $data[$field] ??= 0;
+        }
+
         return $data;
     }
 
@@ -116,6 +125,9 @@ class ItemPriceController extends Controller
             'disc1'                     => ['nullable', 'numeric', 'min:0', 'max:100'],
             'disc2'                     => ['nullable', 'numeric', 'min:0', 'max:100'],
             'disc3'                     => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc4'                     => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc5'                     => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc6'                     => ['nullable', 'numeric', 'min:0', 'max:100'],
             'handling_cost'             => ['nullable', 'numeric', 'min:0'],
             'handling_qty'              => ['nullable', 'integer', 'min:1', 'max:9999'],
             'additional_cost_base_unit' => ['nullable', 'numeric', 'min:0'],

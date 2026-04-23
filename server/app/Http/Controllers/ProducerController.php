@@ -55,6 +55,13 @@ class ProducerController extends Controller
 
         $selectedCategoryId = $request->query('category_id');
 
+        $sort    = $request->query('sort', 'id');
+        $dir     = $request->query('dir', 'desc');
+        $perPage = (int) $request->query('per_page', 25);
+        if (!in_array($sort, ['id', 'name'])) $sort = 'id';
+        if (!in_array($dir, ['asc', 'desc'])) $dir = 'desc';
+        if (!in_array($perPage, [5, 10, 25, 50, 100])) $perPage = 25;
+
         $categories = \App\Models\ItemPriceCategory::where('org_id', $producer->org_id)
             ->where('status', 'active')
             ->orderBy('name')
@@ -63,11 +70,22 @@ class ProducerController extends Controller
         $itemPrices = ItemPrice::with('category')
             ->where('producer_id', $producer->id)
             ->when($selectedCategoryId, fn($q) => $q->where('category_id', $selectedCategoryId))
-            ->orderBy('name')
-            ->paginate(15)
+            ->orderBy($sort === 'id' ? 'id' : 'name', $dir)
+            ->paginate($perPage)
             ->withQueryString();
 
-        return view('producers.show', compact('producer', 'itemPrices', 'categories', 'selectedCategoryId'));
+        $editingItemId = old('_editing_item_id');
+        $editingItem = $editingItemId
+            ? ItemPrice::where('id', $editingItemId)->where('producer_id', $producer->id)->first()
+            : null;
+
+        $showAddForm = session('show_add_form', false);
+        $prefillCategoryId = session('prefill_category', null);
+
+        return view('producers.show', compact(
+            'producer', 'itemPrices', 'categories', 'selectedCategoryId',
+            'editingItem', 'showAddForm', 'prefillCategoryId'
+        ));
     }
 
     public function pdf(Request $request, Producer $producer)

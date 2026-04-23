@@ -55,6 +55,7 @@ class ItemPriceCategoryController extends Controller
 
     public function update(Request $request, ItemPriceCategory $itemPriceCategory)
     {
+        abort_unless(auth()->user()->isSuperAdmin(), 403);
         $this->authorizeOrg($itemPriceCategory->org_id);
         $data = $this->validateCategory($request);
         $itemPriceCategory->update($data);
@@ -66,6 +67,7 @@ class ItemPriceCategoryController extends Controller
 
     public function destroy(ItemPriceCategory $itemPriceCategory)
     {
+        abort_unless(auth()->user()->isSuperAdmin(), 403);
         $this->authorizeOrg($itemPriceCategory->org_id);
         $itemPriceCategory->delete();
 

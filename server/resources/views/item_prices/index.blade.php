@@ -50,6 +50,9 @@
                             $item->disc1 > 0 ? $fmt($item->disc1 * 100).'%' : null,
                             $item->disc2 > 0 ? $fmt($item->disc2 * 100).'%' : null,
                             $item->disc3 > 0 ? $fmt($item->disc3 * 100).'%' : null,
+                            ($item->disc4 ?? 0) > 0 ? $fmt($item->disc4 * 100).'%' : null,
+                            ($item->disc5 ?? 0) > 0 ? $fmt($item->disc5 * 100).'%' : null,
+                            ($item->disc6 ?? 0) > 0 ? $fmt($item->disc6 * 100).'%' : null,
                         ]);
                         $discStr = count($discParts) ? implode('+', $discParts) : '—';
                     @endphp

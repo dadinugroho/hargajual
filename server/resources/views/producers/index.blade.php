@@ -13,29 +13,29 @@
         <table class="table table-hover mb-0">
             <thead class="table-primary">
                 <tr>
-                    <th>#</th>
+                    <th style="width:3rem">#</th>
                     <th>{{ __('common.name') }}</th>
-                    <th>{{ __('common.status') }}</th>
-                    <th></th>
+                    <th style="width:6rem" class="text-nowrap">{{ __('common.status') }}</th>
+                    <th style="width:3rem"></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($producers as $producer)
                     <tr class="align-middle">
-                        <td>{{ $loop->iteration + ($producers->currentPage() - 1) * $producers->perPage() }}</td>
+                        <td class="text-nowrap">{{ $loop->iteration + ($producers->currentPage() - 1) * $producers->perPage() }}</td>
                         <td>
                             <a href="{{ route('producers.show', $producer) }}" class="text-decoration-none fw-medium">
                                 {{ $producer->name }}
                             </a>
                         </td>
-                        <td>
+                        <td class="text-nowrap">
                             @if($producer->status === 'active')
                                 <span class="badge bg-success">{{ __('common.active') }}</span>
                             @else
                                 <span class="badge bg-secondary">{{ __('common.inactive') }}</span>
                             @endif
                         </td>
-                        <td class="text-end">
+                        <td class="text-end text-nowrap">
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-outline-secondary px-2" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">&#8942;</button>

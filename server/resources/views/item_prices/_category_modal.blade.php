@@ -59,6 +59,9 @@
             categorySelect.insertBefore(newOpt, newOrgOpt);
             categorySelect.value = cat.id;
             modal.hide();
+            document.getElementById('newCategoryModal').addEventListener('hidden.bs.modal', () => {
+                document.getElementById('ip-base-unit').focus();
+            }, { once: true });
         } catch {
             errorDiv.textContent = errorMsg;
             errorDiv.classList.remove('d-none');

@@ -53,38 +53,23 @@
                             @error('base_unit')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
-                        {{-- Row 2: Purchase Price, Disc 1, Disc 2, Disc 3 --}}
-                        <div class="col-md-3">
+                        {{-- Row 2: Purchase Price + Disc 1–6 all in one line --}}
+                        <div class="col-md-2">
                             <label for="purchase_price" class="form-label">{{ __('item_prices.purchase_price') }}</label>
                             <input type="number" id="purchase_price" name="purchase_price" step="0.0001" min="0"
                                    class="form-control @error('purchase_price') is-invalid @enderror"
                                    value="{{ old('purchase_price') }}">
                             @error('purchase_price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
-
-                        <div class="col-md-3">
-                            <label for="disc1" class="form-label">{{ __('item_prices.disc_1') }}</label>
-                            <input type="number" id="disc1" name="disc1" step="0.01" min="0" max="100"
-                                   class="form-control @error('disc1') is-invalid @enderror"
-                                   value="{{ old('disc1') }}">
-                            @error('disc1')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        @foreach([1,2,3,4,5,6] as $d)
+                        <div class="col">
+                            <label for="disc{{ $d }}" class="form-label">{{ __('item_prices.disc_'.$d) }}</label>
+                            <input type="number" id="disc{{ $d }}" name="disc{{ $d }}" step="0.01" min="0" max="100"
+                                   class="form-control{{ $errors->has('disc'.$d) ? ' is-invalid' : '' }}"
+                                   value="{{ old('disc'.$d) }}">
+                            @if($errors->has('disc'.$d))<div class="invalid-feedback">{{ $errors->first('disc'.$d) }}</div>@endif
                         </div>
-
-                        <div class="col-md-3">
-                            <label for="disc2" class="form-label">{{ __('item_prices.disc_2') }}</label>
-                            <input type="number" id="disc2" name="disc2" step="0.01" min="0" max="100"
-                                   class="form-control @error('disc2') is-invalid @enderror"
-                                   value="{{ old('disc2') }}">
-                            @error('disc2')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="disc3" class="form-label">{{ __('item_prices.disc_3') }}</label>
-                            <input type="number" id="disc3" name="disc3" step="0.01" min="0" max="100"
-                                   class="form-control @error('disc3') is-invalid @enderror"
-                                   value="{{ old('disc3') }}">
-                            @error('disc3')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
+                        @endforeach
 
                         {{-- Row 3: Handling Cost, Rounding, Profit --}}
                         <div class="col-md-4">
@@ -159,39 +144,33 @@
 
     function recalculate() {
         const purchase = parseFloat(document.getElementById('purchase_price').value) || 0;
-        const disc1    = parseFloat(document.getElementById('disc1').value) || 0;
-        const disc2    = parseFloat(document.getElementById('disc2').value) || 0;
-        const disc3    = parseFloat(document.getElementById('disc3').value) || 0;
+        let price = purchase;
+        for (let n = 1; n <= 6; n++) {
+            const d = parseFloat(document.getElementById('disc' + n).value) || 0;
+            price = price * (1 - d / 100);
+        }
         const handlingRaw = parseFloat(document.getElementById('handling_cost').value) || 0;
         const handlingQty = parseInt(document.getElementById('handling_qty').value) || 1;
         const handling    = Math.ceil(handlingRaw / handlingQty);
-        const profit   = parseFloat(document.getElementById('profit_base_unit').value) || 0;
-        const rounding = parseFloat(document.getElementById('rounding_base_unit').value) || 0;
-
-        const afterDisc1 = purchase * (1 - disc1 / 100);
-        const afterDisc2 = afterDisc1 * (1 - disc2 / 100);
-        const afterDisc3 = afterDisc2 * (1 - disc3 / 100);
-        const costPrice  = afterDisc3 + handling;
-
-        const rawSelling   = costPrice * (1 + profit / 100);
-        const sellingPrice = rounding > 0
-            ? Math.ceil(rawSelling / rounding) * rounding
-            : rawSelling;
+        const profit      = parseFloat(document.getElementById('profit_base_unit').value) || 0;
+        const rounding    = parseFloat(document.getElementById('rounding_base_unit').value) || 0;
+        const costPrice   = price + handling;
+        const rawSelling  = costPrice * (1 + profit / 100);
+        const sellingPrice = rounding > 0 ? Math.ceil(rawSelling / rounding) * rounding : rawSelling;
 
         const fmt = v => v.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
         document.getElementById('calc_cost_price').textContent    = purchase > 0 ? fmt(costPrice)    : '—';
         document.getElementById('calc_selling_price').textContent = purchase > 0 ? fmt(sellingPrice) : '—';
-
         document.getElementById('hidden_cost_price').value    = purchase > 0 ? costPrice    : '';
         document.getElementById('hidden_selling_price').value = purchase > 0 ? sellingPrice : '';
     }
 
-    ['purchase_price','disc1','disc2','disc3','handling_cost','handling_qty','profit_base_unit','rounding_base_unit']
+    ['purchase_price','disc1','disc2','disc3','disc4','disc5','disc6',
+     'handling_cost','handling_qty','profit_base_unit','rounding_base_unit']
         .forEach(id => document.getElementById(id).addEventListener('input', recalculate));
 
     document.getElementById('item-price-form').addEventListener('submit', recalculate);
 
-    // skip __new__ option when tabbing through fields
     document.getElementById('category_id').addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && this.value === '__new__') e.preventDefault();
     });
@@ -209,7 +188,6 @@
             }
         });
     });
-
 </script>
 
 @include('item_prices._category_modal')

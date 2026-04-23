@@ -31,6 +31,7 @@ return [
     'optional'             => 'opsional',
     'filter_all'           => '— Semua —',
     'category_filter'      => 'Kategori:',
+    'per_page'             => 'Per halaman:',
     'add_to_organization'  => 'Tambah ke Organisasi',
     'remember_me'          => 'Ingat saya',
     'login'                => 'Masuk',
