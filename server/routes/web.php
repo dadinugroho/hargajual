@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('producers', ProducerController::class);
     Route::resource('item_prices', ItemPriceController::class)->except('index');
     Route::post('item_price_categories/quick', [ItemPriceCategoryController::class, 'quickStore'])->name('item_price_categories.quick_store');
+    Route::post('item_price_categories/{item_price_category}/bulk_update', [ItemPriceCategoryController::class, 'bulkUpdate'])->name('item_price_categories.bulk_update');
     Route::resource('item_price_categories', ItemPriceCategoryController::class)->except('show');
 
     // Superadmin only

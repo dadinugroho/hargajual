@@ -100,6 +100,12 @@
                 @endforeach
             </select>
         </div>
+        @if($selectedCategoryId)
+        <button type="button" class="btn btn-sm btn-outline-secondary"
+                data-bs-toggle="modal" data-bs-target="#bulkUpdateModal">
+            {{ __('categories.bulk_update') }}
+        </button>
+        @endif
         @endif
         <div class="d-flex align-items-center gap-2 ms-auto">
             <label for="per_page" class="form-label mb-0 text-nowrap small">{{ __('common.per_page') }}</label>
@@ -367,6 +373,64 @@
 </div>
 
 @include('item_prices._category_modal')
+
+@if($selectedCategoryId)
+@php $selectedCategory = $categories->firstWhere('id', $selectedCategoryId); @endphp
+@if($selectedCategory)
+{{-- Bulk Update Modal --}}
+<div class="modal fade" id="bulkUpdateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('item_price_categories.bulk_update', $selectedCategory) }}">
+                @csrf
+                <input type="hidden" name="producer_id" value="{{ $producer->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('categories.bulk_update') }}: {{ $selectedCategory->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">{{ __('categories.bulk_update_hint') }}</p>
+
+                    {{-- Row 1: Disc 1–6 --}}
+                    <div class="row g-2 mb-2">
+                        @foreach([1,2,3,4,5,6] as $d)
+                        <div class="col">
+                            <label class="form-label small mb-1">{{ __('item_prices.disc_'.$d) }}</label>
+                            <input type="number" name="disc{{ $d }}" step="0.01" min="0" max="100"
+                                   class="form-control form-control-sm">
+                        </div>
+                        @endforeach
+                    </div>
+
+                    {{-- Row 2: Handling Cost, Rounding, Profit --}}
+                    <div class="row g-2">
+                        <div class="col">
+                            <label class="form-label small mb-1">{{ __('item_prices.handling_cost') }}</label>
+                            <input type="number" name="handling_cost" step="0.0001" min="0"
+                                   class="form-control form-control-sm">
+                        </div>
+                        <div class="col">
+                            <label class="form-label small mb-1">{{ __('item_prices.rounding') }}</label>
+                            <input type="number" name="rounding_base_unit" step="0.0001" min="0"
+                                   class="form-control form-control-sm">
+                        </div>
+                        <div class="col">
+                            <label class="form-label small mb-1">{{ __('item_prices.profit') }}</label>
+                            <input type="number" name="profit_base_unit" step="0.01" min="0" max="100"
+                                   class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('categories.bulk_update_btn') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+@endif
 
 @push('scripts')
 <script>
