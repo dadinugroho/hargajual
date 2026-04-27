@@ -13,11 +13,11 @@
         <table class="table table-hover mb-0">
             <thead class="table-primary">
                 <tr>
-                    <th>#</th>
+                    <th style="width:50px">#</th>
                     <th>{{ __('common.name') }}</th>
                     <th>{{ __('common.description') }}</th>
-                    <th>{{ __('common.status') }}</th>
-                    <th></th>
+                    <th style="width:100px">{{ __('common.status') }}</th>
+                    <th style="width:60px"></th>
                 </tr>
             </thead>
             <tbody>
@@ -63,4 +63,5 @@
 </div>
 
 <div class="mt-3">{{ $categories->links() }}</div>
+
 @endsection

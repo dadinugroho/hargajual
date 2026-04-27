@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ItemPrice;
 use App\Models\ItemPriceCategory;
 use Illuminate\Http\Request;
 
@@ -74,6 +75,49 @@ class ItemPriceCategoryController extends Controller
         return redirect()
             ->route('item_price_categories.index')
             ->with('success', 'Category deleted.');
+    }
+
+    public function bulkUpdate(Request $request, ItemPriceCategory $itemPriceCategory)
+    {
+        $this->authorizeOrg($itemPriceCategory->org_id);
+
+        $validated = $request->validate([
+            'producer_id'        => ['nullable', 'exists:producers,id'],
+            'disc1'              => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc2'              => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc3'              => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc4'              => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc5'              => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'disc6'              => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'handling_cost'      => ['nullable', 'numeric', 'min:0'],
+            'profit_base_unit'   => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'profit_box'         => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'rounding_base_unit' => ['nullable', 'numeric', 'min:0'],
+            'rounding_box'       => ['nullable', 'numeric', 'min:0'],
+        ]);
+
+        $producerId = $validated['producer_id'] ?? null;
+        unset($validated['producer_id']);
+
+        $updates = array_filter($validated, fn($v) => $v !== null);
+
+        foreach (['disc1','disc2','disc3','disc4','disc5','disc6','profit_base_unit','profit_box'] as $pct) {
+            if (isset($updates[$pct])) {
+                $updates[$pct] = $updates[$pct] / 100;
+            }
+        }
+
+        if (isset($updates['handling_cost'])) {
+            $updates['handling_qty'] = 1;
+        }
+
+        if (!empty($updates)) {
+            $itemPriceCategory->itemPrices()
+                ->when($producerId, fn($q) => $q->where('producer_id', $producerId))
+                ->update($updates);
+        }
+
+        return redirect()->back()->with('success', __('categories.bulk_update_success'));
     }
 
     public function quickStore(Request $request)
